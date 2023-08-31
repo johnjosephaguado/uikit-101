@@ -11,16 +11,23 @@ class ViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var showAlertButton: UIButton!
+    var message: String?
+    var delegate: ViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         nameTextField.text = "Hello"
         showAlertButton.addTarget(self, action: #selector(showAlert(sender:)), for: .touchUpInside)
+        
+        guard let message else { return }
+        
+        print("message passed: \(message)")
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
         print("button was tapped")
+        dismiss(animated: true)
     }
     
     @objc func showAlert(sender: UIButton) {
@@ -46,6 +53,12 @@ class ViewController: UIViewController {
         }
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func passData(_ sender: Any) {
+        guard let name = nameTextField.text else { return }
+        
+        delegate?.retrieveData(message: name)
     }
 }
 
